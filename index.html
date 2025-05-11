@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      transition: background-color 0.5s ease;
+    }
+
+    .light-theme {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    .dark-theme {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body id="mainBody">
+
+  <h2>Choose Theme</h2>
+  <button onclick="setTheme('light')">Light Theme</button>
+  <button onclick="setTheme('dark')">Dark Theme</button>
+
+  <p id="message" class="fade-in">Your theme will appear here...</p>
+
+  <script>
+    // Load saved preference on page load
+    window.onload = function() {
+      const savedTheme = localStorage.getItem("userTheme");
+      if (savedTheme) {
+        applyTheme(savedTheme);
+      }
+    };
+
+    // Store and apply theme
+    function setTheme(theme) {
+      localStorage.setItem("userTheme", theme);
+      applyTheme(theme);
+    }
+
+    // Apply theme with animation
+    function applyTheme(theme) {
+      const body = document.getElementById("mainBody");
+      body.className = ""; // Clear old classes
+      body.classList.add(theme + "-theme");
+
+      const msg = document.getElementById("message");
+      msg.textContent = `You are using the "${theme}" theme.`;
+      msg.classList.remove("fade-in"); // Restart animation
+      void msg.offsetWidth; // Trigger reflow to reset animation
+      msg.classList.add("fade-in");
+    }
+  </script>
+
+</body>
+</html>
